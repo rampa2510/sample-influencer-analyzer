@@ -37,8 +37,22 @@ export default function InfluencerResults({
             className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm"
           >
             <div className="flex items-start gap-4">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-                <span className="text-xl font-bold text-gray-700">
+              <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden relative">
+                <img
+                  src={`https://avatar.iran.liara.run/public/${influencer.id}`}
+                  alt={influencer.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback to initials if image fails to load
+                    const target = e.currentTarget as HTMLImageElement;
+                    target.style.display = "none";
+                    const fallback = target.nextElementSibling as HTMLElement;
+                    if (fallback) {
+                      fallback.style.display = "flex";
+                    }
+                  }}
+                />
+                <span className="absolute inset-0 text-xl font-bold text-gray-700 bg-gray-100 rounded-full items-center justify-center hidden">
                   {influencer.name
                     .split(" ")
                     .map((n) => n[0])
