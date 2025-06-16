@@ -8,6 +8,9 @@ interface FiltersProps {
   onPlatformChangeAction: (platforms: Platform[]) => void;
   onTierChangeAction: (tiers: InfluencerTier[]) => void;
   onClearAllAction: () => void;
+  showDieHardFans: boolean;
+  onDieHardFansChange: (show: boolean) => void;
+  hasInfluencers: boolean;
 }
 
 export default function Filters({
@@ -16,6 +19,9 @@ export default function Filters({
   onPlatformChangeAction,
   onTierChangeAction,
   onClearAllAction,
+  showDieHardFans,
+  onDieHardFansChange,
+  hasInfluencers,
 }: FiltersProps) {
   const platforms: { value: Platform; label: string }[] = [
     { value: "instagram", label: "Instagram" },
@@ -49,6 +55,8 @@ export default function Filters({
     }
   };
 
+  // Use hasInfluencers to determine if bloggers should be disabled (this represents whether there are blogger influencers available)
+
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
       <div className="flex justify-between items-center mb-6">
@@ -65,22 +73,28 @@ export default function Filters({
         <div>
           <h4 className="font-medium mb-3 text-gray-900">Platform</h4>
           <div className="space-y-2">
-            {platforms.map((platform) => (
-              <label
-                key={platform.value}
-                className="flex items-center cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedPlatforms.includes(platform.value)}
-                  onChange={() => handlePlatformToggle(platform.value)}
-                  className="mr-3 rounded text-blue-600 focus:ring-blue-500"
-                />
-                <span className="text-sm text-gray-800 font-medium">
-                  {platform.label}
-                </span>
-              </label>
-            ))}
+            {platforms.map((platform) => {
+              const isBlogger = platform.value === "bloggers";
+              const shouldDisable = isBlogger && !hasInfluencers;
+              
+              return (
+                <label
+                  key={platform.value}
+                  className={`flex items-center ${shouldDisable ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedPlatforms.includes(platform.value)}
+                    onChange={() => !shouldDisable && handlePlatformToggle(platform.value)}
+                    disabled={shouldDisable}
+                    className="mr-3 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50"
+                  />
+                  <span className="text-sm text-gray-800 font-medium">
+                    {platform.label}
+                  </span>
+                </label>
+              );
+            })}
           </div>
         </div>
 
@@ -103,6 +117,35 @@ export default function Filters({
                 </span>
               </label>
             ))}
+          </div>
+        </div>
+
+        <div>
+          <h4 className="font-medium mb-3 text-gray-900">Additional Filters</h4>
+          <div className="space-y-2">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showDieHardFans}
+                onChange={(e) => onDieHardFansChange(e.target.checked)}
+                className="mr-3 rounded text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-sm text-gray-800 font-medium">
+                Die Hard Fans
+              </span>
+            </label>
+            
+            <label className="flex items-center cursor-not-allowed opacity-50">
+              <input
+                type="checkbox"
+                checked={false}
+                disabled={true}
+                className="mr-3 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50"
+              />
+              <span className="text-sm text-gray-800 font-medium">
+                Intelligent Lookalike Finder
+              </span>
+            </label>
           </div>
         </div>
       </div>

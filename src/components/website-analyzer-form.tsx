@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import React, { useActionState, useState } from "react";
 import { analyzeWebsite } from "@/app/actions/analyze-website";
 import {
   getInfluencersByCategory,
@@ -17,13 +17,13 @@ export default function WebsiteAnalyzerForm() {
     "instagram",
     "youtube",
     "tiktok",
-    "bloggers",
   ]);
   const [selectedTiers, setSelectedTiers] = useState<InfluencerTier[]>([
     "nano",
     "micro",
     "macro",
   ]);
+  const [showDieHardFans, setShowDieHardFans] = useState<boolean>(true);
 
   const filteredInfluencers =
     state?.success && state?.keyword
@@ -40,9 +40,25 @@ export default function WebsiteAnalyzerForm() {
         )
       : [];
 
+  // Check if there are any blogger influencers in the current category
+  const allInfluencersInCategory = state?.success && state?.keyword 
+    ? getInfluencersByCategory(state.keyword) 
+    : [];
+  const hasBloggerInfluencers = allInfluencersInCategory.some(
+    (influencer) => influencer.platform === "bloggers"
+  );
+
+  // Effect to automatically uncheck bloggers if no blogger influencers exist
+  React.useEffect(() => {
+    if (state?.success && !hasBloggerInfluencers && selectedPlatforms.includes("bloggers")) {
+      setSelectedPlatforms(prev => prev.filter(p => p !== "bloggers"));
+    }
+  }, [state?.success, hasBloggerInfluencers, selectedPlatforms]);
+
   const handleClearAllFilters = () => {
-    setSelectedPlatforms(["instagram", "youtube", "tiktok", "bloggers"]);
+    setSelectedPlatforms(["instagram", "youtube", "tiktok"]);
     setSelectedTiers(["nano", "micro", "macro"]);
+    setShowDieHardFans(true);
   };
 
   return (
@@ -149,6 +165,9 @@ export default function WebsiteAnalyzerForm() {
                 onPlatformChangeAction={setSelectedPlatforms}
                 onTierChangeAction={setSelectedTiers}
                 onClearAllAction={handleClearAllFilters}
+                showDieHardFans={showDieHardFans}
+                onDieHardFansChange={setShowDieHardFans}
+                hasInfluencers={hasBloggerInfluencers}
               />
             </div>
 
@@ -156,6 +175,7 @@ export default function WebsiteAnalyzerForm() {
               <InfluencerResults
                 influencers={filteredInfluencers}
                 category={state.keyword}
+                showDieHardFans={showDieHardFans}
               />
             </div>
           </div>

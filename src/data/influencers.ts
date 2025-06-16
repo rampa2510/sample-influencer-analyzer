@@ -193,3 +193,15 @@ export function getInfluencersByCategory(category: string): Influencer[] {
 		influencer.category.toLowerCase() === category.toLowerCase()
 	)
 }
+
+export function getHighestEngagementInfluencer(influencers: Influencer[]): string | null {
+	if (influencers.length === 0) return null;
+	
+	const highestEngagement = influencers.reduce((prev, current) => {
+		const prevRate = parseFloat(prev.engagementRate.replace('%', ''));
+		const currentRate = parseFloat(current.engagementRate.replace('%', ''));
+		return currentRate > prevRate ? current : prev;
+	});
+	
+	return highestEngagement.id;
+}

@@ -1,14 +1,17 @@
-import { Influencer } from "@/data/influencers";
+import { Influencer, getHighestEngagementInfluencer } from "@/data/influencers";
 
 interface InfluencerResultsProps {
   influencers: Influencer[];
   category: string;
+  showDieHardFans?: boolean;
 }
 
 export default function InfluencerResults({
   influencers,
   category,
+  showDieHardFans = true,
 }: InfluencerResultsProps) {
+  const highestEngagementId = getHighestEngagementInfluencer(influencers);
   if (influencers.length === 0) {
     return (
       <div className="mt-8 text-center">
@@ -96,6 +99,17 @@ export default function InfluencerResults({
                     <span className="text-gray-700">Eng. Rate</span>
                   </div>
                 </div>
+
+                {showDieHardFans && influencer.id === highestEngagementId && (
+                  <div className="mb-3">
+                    <div className="inline-flex items-center gap-1 bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-bold">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                      </svg>
+                      DIE HARD FANS
+                    </div>
+                  </div>
+                )}
 
                 <p className="text-gray-700 text-sm mb-3">
                   {influencer.description}
