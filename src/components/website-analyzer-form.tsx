@@ -62,21 +62,21 @@ export default function WebsiteAnalyzerForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
       <div className="max-w-6xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 lg:p-8 mb-6 lg:mb-8">
+          <div className="text-center mb-6 lg:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               AI Influencer Discovery
             </h1>
-            <p className="text-gray-600">
+            <p className="text-sm sm:text-base text-gray-600">
               Paste a URL to analyze and find the perfect influencers for your
               brand.
             </p>
           </div>
 
           <form action={formAction} className="space-y-4">
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <input
                 type="url"
                 name="websiteUrl"
@@ -88,7 +88,7 @@ export default function WebsiteAnalyzerForm() {
               <button
                 type="submit"
                 disabled={isPending}
-                className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center gap-2"
+                className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center gap-2 whitespace-nowrap"
               >
                 {isPending && (
                   <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
@@ -157,8 +157,8 @@ export default function WebsiteAnalyzerForm() {
         </div>
 
         {state?.success && state?.keyword && (
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            <div className="lg:col-span-1">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="lg:col-span-1 order-2 lg:order-1">
               <Filters
                 selectedPlatforms={selectedPlatforms}
                 selectedTiers={selectedTiers}
@@ -171,7 +171,7 @@ export default function WebsiteAnalyzerForm() {
               />
             </div>
 
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-3 order-1 lg:order-2">
               <InfluencerResults
                 influencers={filteredInfluencers}
                 category={state.keyword}
