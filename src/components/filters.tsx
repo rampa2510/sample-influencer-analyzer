@@ -135,17 +135,22 @@ export default function Filters({
               </span>
             </label>
             
-            <label className="flex items-center py-1 cursor-not-allowed opacity-50">
+            <div className="flex items-center py-1 cursor-not-allowed opacity-60 relative">
               <input
                 type="checkbox"
                 checked={false}
                 disabled={true}
                 className="mr-3 h-4 w-4 rounded text-blue-600 focus:ring-blue-500 focus:ring-2 disabled:opacity-50"
               />
-              <span className="text-sm text-gray-800 font-medium">
-                Intelligent Lookalike Finder
-              </span>
-            </label>
+              <div className="flex flex-col">
+                <span className="text-sm text-gray-800 font-medium">
+                  Intelligent Lookalike Finder
+                </span>
+                <span className="text-xs text-blue-600 font-medium">
+                  🚀 Upcoming Feature - Stay Tuned!
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

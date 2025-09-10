@@ -41,17 +41,22 @@ export default function WebsiteAnalyzerForm() {
       : [];
 
   // Check if there are any blogger influencers in the current category
-  const allInfluencersInCategory = state?.success && state?.keyword 
-    ? getInfluencersByCategory(state.keyword) 
-    : [];
+  const allInfluencersInCategory =
+    state?.success && state?.keyword
+      ? getInfluencersByCategory(state.keyword)
+      : [];
   const hasBloggerInfluencers = allInfluencersInCategory.some(
-    (influencer) => influencer.platform === "bloggers"
+    (influencer) => influencer.platform === "bloggers",
   );
 
   // Effect to automatically uncheck bloggers if no blogger influencers exist
   React.useEffect(() => {
-    if (state?.success && !hasBloggerInfluencers && selectedPlatforms.includes("bloggers")) {
-      setSelectedPlatforms(prev => prev.filter(p => p !== "bloggers"));
+    if (
+      state?.success &&
+      !hasBloggerInfluencers &&
+      selectedPlatforms.includes("bloggers")
+    ) {
+      setSelectedPlatforms((prev) => prev.filter((p) => p !== "bloggers"));
     }
   }, [state?.success, hasBloggerInfluencers, selectedPlatforms]);
 
@@ -66,12 +71,14 @@ export default function WebsiteAnalyzerForm() {
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 lg:p-8 mb-6 lg:mb-8">
           <div className="text-center mb-6 lg:mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-              AI Influencer Discovery
+            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3">
+              AI-Powered Influencer Matching
             </h1>
+            <p className="text-lg sm:text-xl text-gray-700 mb-2 font-medium">
+              Find perfect influencer in seconds
+            </p>
             <p className="text-sm sm:text-base text-gray-600">
-              Paste a URL to analyze and find the perfect influencers for your
-              brand.
+              Crafted to meet your needs using AI
             </p>
           </div>
 
@@ -88,12 +95,27 @@ export default function WebsiteAnalyzerForm() {
               <button
                 type="submit"
                 disabled={isPending}
-                className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center gap-2 whitespace-nowrap"
+                className="relative px-4 sm:px-8 py-4 sm:py-5 bg-gradient-to-r from-gray-900 via-purple-900 to-indigo-900 text-white rounded-2xl hover:from-black hover:via-purple-800 hover:to-indigo-800 disabled:opacity-50 disabled:cursor-not-allowed font-black text-sm sm:text-xl flex items-center justify-center gap-2 shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 min-w-0 animate-pulse hover:animate-none border-4 border-cyan-400 hover:border-cyan-300"
+                style={{
+                  background: !isPending ? 'linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e, #0f3460, #533483, #2d1b69, #0e4b99, #2a5298)' : undefined,
+                  backgroundSize: '800% 800%',
+                  animation: !isPending ? 'gradient 4s ease infinite, pulse 2s infinite' : undefined
+                }}
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-2xl"></div>
                 {isPending && (
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 sm:h-6 sm:w-6 border-3 border-white border-t-transparent flex-shrink-0 z-10"></div>
                 )}
-                {isPending ? "Analyzing..." : "Analyze & Find Influencers"}
+                <span className="relative z-10 font-black tracking-wider text-center drop-shadow-lg">
+                  <span className="hidden sm:inline">
+                    {isPending
+                      ? "🔍 ANALYZING..."
+                      : "🚀 FIND YOUR INFLUENCERS INSTANTLY"}
+                  </span>
+                  <span className="sm:hidden">
+                    {isPending ? "🔍 ANALYZING..." : "🚀 FIND YOUR INFLUENCERS"}
+                  </span>
+                </span>
               </button>
             </div>
           </form>
