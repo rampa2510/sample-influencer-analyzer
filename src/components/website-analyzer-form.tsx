@@ -61,7 +61,11 @@ export default function WebsiteAnalyzerForm() {
   }, [state?.success, hasBloggerInfluencers, selectedPlatforms]);
 
   const handleClearAllFilters = () => {
-    setSelectedPlatforms(["instagram", "youtube", "tiktok"]);
+    const defaultPlatforms = ["instagram", "youtube", "tiktok"];
+    if (hasBloggerInfluencers) {
+      defaultPlatforms.push("bloggers");
+    }
+    setSelectedPlatforms(defaultPlatforms);
     setSelectedTiers(["nano", "micro", "macro"]);
     setShowDieHardFans(true);
   };
