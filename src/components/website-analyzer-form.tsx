@@ -61,7 +61,7 @@ export default function WebsiteAnalyzerForm() {
   }, [state?.success, hasBloggerInfluencers, selectedPlatforms]);
 
   const handleClearAllFilters = () => {
-    const defaultPlatforms = ["instagram", "youtube", "tiktok"];
+    const defaultPlatforms: Platform[] = ["instagram", "youtube", "tiktok"];
     if (hasBloggerInfluencers) {
       defaultPlatforms.push("bloggers");
     }
